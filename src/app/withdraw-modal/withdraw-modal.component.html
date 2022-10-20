@@ -1,0 +1,87 @@
+<div class="popup popup_settings mfp-hide" id="popup-withdraw">
+    <div *ngIf="!isConfirm">
+        <div class="popup__title h6" *ngIf="!processing">Withdraw GAV tokens</div>
+        <div class="popup__title h6" *ngIf="processing">Processing your transaction...</div>
+        <div class="popup__tabs js-tabs">
+            <div class="operations" *ngIf="!processing">
+                <form class="operations__form d-block" *ngIf="!withdrawId">
+                    <div *ngIf="message" class=" message-alert" [ngClass]="success? 'bg-green': 'bg-red'">
+                        {{ message }}
+                    </div>
+                    <div class="operations__field field js-field">
+                        <div class="field__label">PASTE THE RECEIVING WALLET ADDRESS<svg class="icon icon-info-square">
+                                <use xlink:href="assets/img/sprite.svg#icon-info-square"></use>
+                            </svg></div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="text" name="address"
+                                [(ngModel)]="address" (change)="addressValidator()"> </div>
+                        <div class="operations__note">
+                            Ensure the receiving wallet is a BSC wallet address.
+                        </div>
+                    </div>
+                    <div *ngIf="addressError" class=" message-alert bg-red">
+                        {{ addressError }}
+                    </div>
+                    <div class="operations__balance" *ngIf="balance">
+                        <div class="operations__label">AVAILABLE BALANCE</div>
+                        <div class="operations__counter">{{formatMoney(balance.GAV)}} GAV</div>
+                        <div class="operations__price">{{formatMoney(balance.price_USD)}} USDT</div>
+                    </div>
+                    <div class="operations__action">
+                        <div class="operations__field field js-field">
+                            <div class="field__label">AMOUNT TO WITHDRAW (GAV)
+                            </div>
+                            <div class="field__wrap">
+                                <input class="field__input js-field-input" type="text" name="amount"
+                                    [(ngModel)]="amount" (keyup)="amountValidator()">
+                            </div>
+                            <span class="field__max cursor-p" (click)="maxAmount()">Max Amount</span>
+                        </div>
+
+                    </div>
+                    <div *ngIf="amountError" class=" message-alert bg-red">
+                        {{ amountError }}
+                    </div>
+                    <div class="operations__balance mb-0 rb-0" *ngIf="fee">
+                        <div class="operations__label">Transaction Fee</div>
+                        <div class="operations__counter">{{formatMoney(fee.general)}} GAV</div>
+                    </div>
+                    <div class="operations__note" *ngIf="fee">
+                        A fee of {{fee.general}} GAVs will be charged on this transaction
+                    </div>
+                    <div class="operations__balance mb-0 rb-0 mt-16" *ngIf="fee">
+                        <div class="operations__label">TOTAL RECEIVABLE</div>
+                        <div class="operations__counter" *ngIf="amount">{{ formatMoney(receivable) }} GAV</div>
+                    </div>
+                    <div class="operations__note">
+                        <ul class="custom_ul">
+                            <li>Ensure to confirm the withdrawal address before you proceed.</li>
+                            <li>Gamerevv will not bear the responsibility of tokens transferred to a wrong wallet</li>
+                            <li>Do not withdraw directly to a crowdfund or ICO.</li>
+                            <li>We will not credit your account with tokens from such sales.</li>
+                        </ul>
+                    </div>
+
+                    <button class="operations__btn btn btn_blue btn_wide mt-16"
+                        (click)="openConfirm()">Withdraw</button>
+                </form>
+                <form class="operations__form d-block" *ngIf="withdrawId">
+                    <div class=" text-center h4">Verify your withdrawal</div>
+                    <p class="text-center">A withdrawal verification code has been sent to your email </p>
+                    <div class="login__field field js-field mt-16">
+
+                        <div class="field__wrap otp-field">
+                            <otp *ngIf="!processing" [setting]="settings" (onValueChange)="onInputChange($event)"></otp>
+                            <div *ngIf="processing"> <strong>Processing...</strong> </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="operations text-center" *ngIf="processing">
+                <img src="assets/img/After-Initiation-of-Transactions-image.png" />
+                <h4 class="processing__title">Hang in there as we perform our magic.</h4>
+            </div>
+        </div>
+    </div>
+    <app-toast [message]="message" [success]="success"></app-toast>
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm"></app-confirm-modal>
+</div>

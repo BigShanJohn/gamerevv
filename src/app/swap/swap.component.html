@@ -1,0 +1,65 @@
+<div class="page full">
+    <app-sidebar page="swap"></app-sidebar>
+    <div class="page__content">
+        <app-header></app-header>
+        <div class="page__container page__container_exchange"  [ngClass]="pageLoader >= 3 ? '': 'd-none'">
+            <div class="exchange">
+                <div class="exchange__top" *ngIf="twentyFourHour && twentyFourHour.prices[1]">
+                    <div class="exchange__cell">
+                        <div class="exchange__company">
+                            <div class="exchange__head">
+                                <div class="exchange__logo"><img src="assets/img/GAV.png" alt=""></div>
+                                <div class="exchange__details">
+                                    <div class="exchange__currency">GAV/USDT</div>
+                                    <div class="exchange__info">Gamrevv Token</div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exchange__cell">
+                        <div class="exchange__info">24h Change</div>
+                        <div class="status " [ngClass]="getPercentage(twentyFourHour.prices[1].usdPrice,
+                        twentyFourHour.prices[0].usdPrice) > 0 ? 'positive': 'negative'">
+                            {{ formatMoney(getPercentage(twentyFourHour.prices[1].usdPrice,
+                            twentyFourHour.prices[0].usdPrice)) }} %</div>
+                    </div>
+                    <div class="exchange__cell">
+                        <div class="exchange__info">Lastest Price</div>
+                        <div class="exchange__price">{{ formatMoney(twentyFourHour.prices[1].usdPrice) }} USDT</div>
+                    </div>
+                    <div class="exchange__cell">
+                        <div class="exchange__info">24h Close</div>
+                        <div class="exchange__price">{{ formatMoney(twentyFourHour.prices[0].usdPrice )}} USDT</div>
+                    </div>
+                    <div class="exchange__cell" *ngIf="balance">
+                        <div class="exchange__info">Volume</div>
+                        <div class="exchange__price">{{ formatMoney(balance.GAV) }} GAV</div>
+                    </div>
+                </div>
+                <div class="exchange__row">
+                    <div class="exchange__container mobile-hide ">
+                        <div class="tradingview-widget-container">
+                            <div id="tradingview_8c007"></div>
+                        </div>
+                    </div>
+                    <div class="exchange__sidebar">
+
+                        <div class="actions">
+                            <div class="actions__menu"><a class="actions__link " [ngClass]="!isSellTab ? 'active': ''"
+                                    (click)="isSellTab=false">Buy</a><a class="actions__link"
+                                    (click)="isSellTab=true" [ngClass]="isSellTab ? 'active': ''">Sell</a></div>
+                            <app-buy-modal *ngIf="!isSellTab" [fee]="transactionFee" [balance]="balance"
+                                (newEvent)="reloadData($event)"></app-buy-modal>
+                            <app-sell-modal *ngIf="isSellTab" [fee]="transactionFee" [balance]="balance"
+                            (newEvent)="reloadData($event)"></app-sell-modal>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max = "3"></app-page-loader>
+    </div>
+</div>

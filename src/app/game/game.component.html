@@ -1,0 +1,259 @@
+<div class="page full">
+    <app-sidebar page="games"></app-sidebar>
+    <div class="page__content" *ngIf="game">
+        <app-header></app-header>
+        <div class="page__container" [ngClass]="pageLoader >= 1 ? '': 'd-none'">
+            <div class="">
+                <div>
+                    <a routerLink="/games" class="fa fa-long-arrow-left" style="font-size:15px"> Gameroom</a>
+                    <div class="page__title h4">{{game.title}} </div>
+                    <div class="game__sub__title h6">{{ game.tagline }}</div>
+                </div>
+
+                <div>
+                    <div *ngIf="!showGame">
+                        <ngx-slick-carousel class="carousel game__carousel" #slickModal="slick-carousel"
+                            [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
+                            (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+                            <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+                                <img src="{{ slide.img }}" alt="" width="100%">
+                            </div>
+                        </ngx-slick-carousel>
+                    </div>
+                    <iframe id="iframe" *ngIf="showGame" width="400" height="400" class="iframe"
+                        [ngClass]="fullscreen ? 'fullscreen':''" [src]="url" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+
+
+                    <div class="bg-white game__details__body ">
+                        <div class="game__title">
+
+                            Game Requirements
+                        </div>
+                        <div class="game___requirement__inner">
+                            <div class="wallets__list w-60">
+
+                                <div class="wallets__item" *ngIf="game.nfts">
+                                    <div class="wallets__icon"><img src="assets/img/circle-purple.svg" alt=""></div>
+                                    <div class="wallets__details">
+                                        <div class="wallets__info"> NFTs </div>
+                                        <div class="wallets__number h6" style="word-break: break-all;">
+                                            {{ game.nfts }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="wallets__item">
+                                    <div class="wallets__icon"><img src="assets/img/circle-blue.svg" alt=""></div>
+                                    <div class="wallets__details">
+                                        <div class="wallets__info"> NFTs </div>
+                                        <div class="wallets__number h6" style="word-break: break-all;">
+                                            Revv Citizen
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="wallets__item" *ngIf="balance">
+                                    <div class="wallets__icon"><img src="assets/img/circle-blue.svg" alt=""></div>
+                                    <div class="wallets__details">
+                                        <div class="wallets__info">GAM Tokens</div>
+                                        <div class="wallets__number h6">{{ formatMoney(gameGAM) }} GAM</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game__Play__Watch requirement__item w-40">
+                                <button class="wallets__btn btn btn_blue " (click)="playGame()"><svg
+                                        class="icon icon-withdraw">
+                                        <use xlink:href="assets/img/sprite.svg#icon-withdraw"></use>
+                                    </svg><span class="btn__text">{{ showGame ? 'Stop': 'Play'}}</span>
+                                </button>
+                                <button *ngIf="showGame" class="wallets__btn btn btn_border  ml-1"
+                                    (click)="openFullscreen()"><svg class="icon icon-deposit">
+                                        <use xlink:href="assets/img/sprite.svg#icon-deposit"></use>
+                                    </svg><span class="btn__text">Full Screen</span></button>
+                                <button class="wallets__btn btn btn_border  ml-1" (click)="openVideo(game.video)"><svg
+                                        class="icon icon-deposit">
+                                        <use xlink:href="assets/img/sprite.svg#icon-deposit"></use>
+                                    </svg><span class="btn__text">Watch Trailer</span>
+                                </button>
+                                <button class="wallets__btn btn btn_blue " (click)="customDeposit()"><svg
+                                        class="icon icon-deposit">
+                                        <use xlink:href="assets/img/sprite.svg#icon-deposit"></use>
+                                    </svg><span class="btn__text">Deposit</span>
+                                </button>
+                                <button class="wallets__btn btn btn_blue " (click)="claim()"><svg
+                                        class="icon icon-withdraw">
+                                        <use xlink:href="assets/img/sprite.svg#icon-withdraw"></use>
+                                    </svg><span class="btn__text">Claim</span>
+                                </button>
+
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="game__title">
+                            Game Description
+                        </div>
+                        <div class="promotion__text">{{ game.description }}</div>
+
+                        <div class="game__title">
+                            Game Details
+                        </div>
+
+                        <div class="activity__table">
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Released Date</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.launchDate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Publisher</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.publisher }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Developers</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.developers }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Languages</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.languages }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Countries</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.countries }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Genre</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.genre }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Game Modes</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.gameMode }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Supported Input</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.supportedInput }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Accessibility</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.accessibility }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Features</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.features }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Address</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.address }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Creator </div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.creator}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">GAME GAM</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ gameGAM }}
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">GAME USER GAM</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ userGAM }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="balances__row">
+                                <div class="balances__text activity__cell">Tax</div>
+                                <div class="balances__cell">
+                                    <div class="balances__number">
+                                        {{ game.tax }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max="1"></app-page-loader>
+    </div>
+</div>
+<a id="openVideoModal" class="js-popup-open" href="#popup-video"></a>
+<app-toast [message]="message" [success]="success"></app-toast>
+<div class="popup popup_settings mfp-hide" id="popup-confirm">
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm" [message]="gameMessage"></app-confirm-modal>
+    <div class="operations text-center" *ngIf="!isConfirm">
+        <img src="assets/img/After-Initiation-of-Transactions-image.png" />
+        <h4 class="processing__title">Hang in there as we perform our magic.</h4>
+    </div>
+</div>
+<a class=" js-popup-open" id="popup-button" href="#popup-confirm"></a>
+<a class=" js-popup-open" id="popup-button-deposit" href="#popup-deposit"></a>
+<a class=" js-popup-open" id="popup-button-claim" href="#popup-claim"></a>
+<app-video [video]="selectedVideo"></app-video>
+<app-deposit-modal *ngIf="game && balance" [balance]="balance" [title]="game.title" [game]="game"
+    (newEvent)="reloadData($event)"></app-deposit-modal>
+<app-claim-modal *ngIf="game && userGAM" [GAM]="userGAM" [title]="game.title" [game]="game"
+    (newEvent)="reloadData($event)"></app-claim-modal>

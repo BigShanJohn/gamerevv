@@ -1,0 +1,109 @@
+<div class="sidebar small">
+  <div class="sidebar__head">
+    <a class="sidebar__logo" href="index.html"><img class="sidebar__pic sidebar__pic_light"
+        src="assets/img/side-logo.png" alt="" /><img class="sidebar__pic sidebar__pic_dark"
+        src="assets/img/white_icons/gamerevv.png" alt="" /></a><button class="sidebar__toggle"><svg
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M22 12H3" stroke="#11142d"></path>
+        <g stroke="#808191">
+          <path d="M22 4H13"></path>
+          <path opacity=".301" d="M22 20H13"></path>
+        </g>
+        <path d="M7 7l-5 5 5 5" stroke="#11142d"></path>
+      </svg></button><button class="sidebar__close"><svg class="icon icon-close">
+        <use xlink:href="assets/img/sprite.svg#icon-close"></use>
+      </svg></button>
+  </div>
+  <div class="sidebar__body">
+    <nav class="sidebar__nav">
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'home' ? 'active' : ''" routerLink="/">
+        <div class="sidebar__icon">
+          <img src="assets/img/Home.svg" alt="Home" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/Home.svg" alt="Home" *ngIf="isDarkMode" />
+        </div>
+
+        <div class="sidebar__text">HOME</div>
+      </a>
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'swap' ? 'active' : ''" routerLink="/swap">
+        <div class="sidebar__icon">
+          <img src="assets/img/swap.svg" alt="swap" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/swap.svg" alt="swap" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">SWAP</div>
+      </a>
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'proposals' ? 'active' : ''"
+        routerLink="/proposals">
+        <div class="sidebar__icon">
+          <img src="assets/img/proposal.svg" alt="proposal" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/proposal.svg" alt="proposal" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">D.A.O</div>
+      </a>
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'wallet' ? 'active' : ''"
+        routerLink="/wallet">
+        <div class="sidebar__icon">
+          <img src="assets/img/wallet.svg" alt="wallet" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/wallet.svg" alt="wallet" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">WALLET</div>
+      </a>
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'gameroom' ? 'active' : ''"
+        routerLink="/games">
+        <div class="sidebar__icon">
+          <img src="assets/img/Game.svg" alt="games" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/Game.svg" alt="games" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">GAMEROOM</div>
+      </a>
+
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'defi' ? 'active' : ''" routerLink="/defi">
+        <div class="sidebar__icon">
+          <img src="assets/img/defi.svg" alt="games" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/defi.svg" alt="games" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">DE-FI</div>
+      </a>
+
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'nftmarket' ? 'active' : ''"
+        routerLink="/nfts">
+        <div class="sidebar__icon">
+          <img src="assets/img/nftmarket.svg" alt="games" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/nftmarket.svg" alt="games" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">NFT MARKETPLACE</div>
+      </a>
+
+      <a class="sidebar__item sidebar__bottom__border" [ngClass]="page == 'wallet' ? 'active' : ''"
+        routerLink="/vrworld">
+        <div class="sidebar__icon">
+          <img src="assets/img/vrworld.svg" alt="games" *ngIf="!isDarkMode" />
+          <img src="assets/img/white_icons/vrworld.svg" alt="games" *ngIf="isDarkMode" />
+        </div>
+        <div class="sidebar__text">V.R WORLD</div>
+      </a>
+
+    </nav>
+    <div class="sidebar__mail">
+      <div class="sidebar__info">Send Gamerevv invite to a friend</div><button
+        class="sidebar__btn btn btn_white btn_sm js-popup-open" href="#popup-invite">Send Now</button>
+    </div>
+    <form class="sidebar__search"><input class="sidebar__input" type="text" placeholder="Search" /><button
+        class="sidebar__start"><svg class="icon icon-search">
+          <use xlink:href="assets/img/sprite.svg#icon-search"></use>
+        </svg></button></form>
+  </div>
+  <div class="sidebar__bottom"><label
+      class="switch switch_theme js-switch-theme"  >
+      <input class="switch__input" (change)="isDarkMode = !isDarkMode" type="checkbox" />
+      <span
+        class="switch__in"><span class="switch__box"></span><span class="switch__icon"><svg class="icon icon-moon">
+            <use xlink:href="img/sprite.svg#icon-moon"></use>
+          </svg><svg class="icon icon-sun">
+            <use xlink:href="img/sprite.svg#icon-sun"></use>
+          </svg></span></span></label><a class="sidebar__download" href="#"><svg class="icon icon-download">
+        <use xlink:href="img/sprite.svg#icon-download"></use>
+      </svg></a>
+  </div>
+</div>
+<app-invite-modal [invite]="false"></app-invite-modal>

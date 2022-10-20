@@ -1,0 +1,65 @@
+<div class="popup popup_settings mfp-hide" id="popup-profile">
+    <div class="popup__title h6">Account Settings</div>
+    <div class="popup__tabs js-tabs" *ngIf="user">
+        <div class="popup__select mobile-show">
+            <select class="select js-tabs-select">
+                <option (click)="isProfile = true">Profile</option>
+                <option (click)="isProfile = false">Password</option>
+            </select>
+        </div>
+        <div class="popup__nav">
+            <a class="popup__link js-tabs-link " [ngClass]="isProfile ? 'active': ''"
+                (click)="isProfile = true">Profile</a>
+            <a class="popup__link js-tabs-link" [ngClass]="!isProfile ? 'active': ''"
+                (click)="isProfile = false">Change Username</a>
+        </div>
+        <div class="popup__container">
+            <div class="popup__item js-tabs-item" *ngIf="isProfile">
+                <div class="popup__user">
+                    <div class="popup__line">
+                        <div class="popup__ava"><img [src]="getPhoto(user.photo)" alt="" /></div>
+                        <div class="popup__details">
+                            <p *ngIf="user">Wallet Address: <a
+                                    [href]="bscAddressLink(user.address)">{{user.address}}</a>
+                                <button class="pl-2" (cbOnSuccess)="isCopied = true" ngxClipboard
+                                    [cbContent]="user.address">
+                                    <span class="copy" *ngIf="!isCopied">COPY</span>
+                                    <span class="copied" *ngIf="isCopied">COPIED</span>
+                                </button>
+                            </p>
+                            <p *ngIf="user">Email Address: {{user.email}}</p>
+                            <p *ngIf="user">Username : {{user.username}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup__fieldset text-center">
+                    <qrcode [qrdata]="user.address" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+                    <button class="popup__btn btn btn_blue" (click)="logout()">Log Out</button>
+                </div>
+
+            </div>
+
+            <div class="popup__item js-tabs-item" *ngIf="!isProfile">
+                <form class="popup__form" *ngIf="!processing">
+
+                    <div class="popup__title h6">Change Username</div>
+                    <div *ngIf="message" class=" message-alert bg-red">
+                        {{ message }}
+                    </div>
+                    <div class="bg-success" *ngIf="isOkay"> Transaction successful </div>
+                    
+                    <div class="popup__field field js-field">
+                        <div class="field__label">Username</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="text"
+                                name="username" [(ngModel)]="username"></div>
+                    </div>
+                  <button class="popup__btn btn btn_blue btn_wide" (click)="submit()">Change Username</button>
+                </form>
+                <div *ngIf="processing" class="text-center"> <strong>Processing...</strong> </div>
+            </div>
+
+
+        </div>
+    </div>
+    <app-toast [message]="message" [success]="success"></app-toast>
+</div>

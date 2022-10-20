@@ -1,0 +1,28 @@
+<form class="actions__form" *ngIf="balance">
+    <div *ngIf="!isConfirm">
+        <div *ngIf="!processing">
+            <div class="bg-success" *ngIf="isOkay"> Transaction successful </div>
+            <div class="actions__fieldset">
+                <div class="actions__field">
+                    <div class="actions__label">available GAV</div>
+                    <div class="actions__input">{{ formatMoney(balance.GAV) }} </div>
+                    <div class="actions__currency color-green">GAV</div>
+                </div>
+                <div class="actions__field">
+                    <div class="actions__label">gav amount</div><input class="actions__input" type="tel" name="amount"
+                        [(ngModel)]="amount">
+                    <div class="actions__currency color-orange">GAV</div>
+                </div>
+                <div class="actions__field">
+                    <div class="actions__label">Estimated bnb</div>
+                    <div class="actions__input"></div>
+                    <div class="actions__currency color-green"> {{ formatMoney(receivable) }} BNB</div>
+                </div>
+            </div><button class="actions__btn btn btn_blue btn_wide" (click)="openConfirm()">Sell GAV</button>
+        </div>
+
+        <div *ngIf="processing" class="text-center"> <strong>Processing...</strong> </div>
+        <app-toast [message]="message"></app-toast>
+    </div>
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm"></app-confirm-modal>
+</form>

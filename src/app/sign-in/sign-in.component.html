@@ -1,0 +1,23 @@
+<div class="login">
+    <div class="login__row">
+        <app-left class="dark-bg"></app-left>
+        <div class="login__col index-right">
+            <form method="POST">
+                <a class="login__logo" href="index.html"><img src="assets/img/2-Secondary logo.svg" alt=""></a>
+                <div class="login__form">
+                    <div class="login__stage h4">Welcome to <br>Gamerevv</div>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Email</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="email"
+                                [(ngModel)]="email" name="email"></div>
+                    </div>
+                    <a class="login__btn btn btn_blue btn_wide btn-block" (click)="handleLogin()"
+                        *ngIf="!isProcessing">Log in / Sign up</a>
+                    <a class="login__btn btn btn_blue btn_wide btn-block" *ngIf="isProcessing">Processing <img
+                            class="button-loader" src="assets/img/animation_500_kz2ksczx.gif"></a>
+                </div>
+            </form>
+            <app-toast [message]="message" [success]="success"></app-toast>
+        </div>
+    </div>
+</div>

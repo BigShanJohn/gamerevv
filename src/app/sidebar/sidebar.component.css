@@ -1,0 +1,8 @@
+.switch__icon, .switch__icon .icon, .icon{
+    width: 50px !important;
+    height: 50px !important;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: -100;
+}

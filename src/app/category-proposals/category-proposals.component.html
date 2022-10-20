@@ -1,0 +1,62 @@
+<div class="page full">
+    <app-sidebar page="proposals"></app-sidebar>
+    <div class="page__content">
+        <app-header></app-header>
+        <div class="page__container" [ngClass]="pageLoader >= 4 ? '': 'd-none'">
+            <div class="search" *ngIf="category">
+                <a routerLink="/proposals" class="fa fa-long-arrow-left" style="font-size:20px"> All Proposals</a>
+                <div class="search__container">
+                    <div class="search__wrap">
+                        <div class="search__title h4">{{ category.name }}<br /> Proposals</div>
+                        <div class="search__info">Share your voice on the growth direction of the ecosystem.</div>
+                    </div>
+                    <form class="search__form"><input (change)="search()" (keyup)="search()" class="search__input"
+                            type="text" placeholder="Search" name="query" [(ngModel)]="query"><button
+                            class="search__btn" (click)="search()"><svg class="icon icon-search">
+                                <use xlink:href="assets/img/sprite.svg#icon-search"></use>
+                            </svg></button></form>
+                    <div class="search__preview"><img [src]="category.image" alt=""></div>
+                </div>
+            </div>
+            <div class="prices__btns"><button class="prices__btn btn btn_blue js-popup-open"
+                    href="#popup-proposal">Create
+                    Proposal</button>
+            </div>
+            <div class="promotions" *ngIf="result">
+                <div class="promotions__wrapper">
+
+                    <div class="promotions__stage h5">Proposals</div>
+                    <div class="promotions__list">
+                        <div class="promotions__item" *ngFor="let proposal of pageOfItems"><a
+                                class="promotions__preview" [routerLink]="['/proposal-detail/'+proposal.id]"><img
+                                src="assets/img/placeholder.png" [src]="getImageURL(proposal.image)" alt=""></a>
+                            <div class="promotions__body">
+                                <div class="promotions__date bg-green-opacity color-green">{{ proposal.startDate }} - {{
+                                    proposal.endDate }} </div>
+                                <a class="promotions__info" [routerLink]="['/proposal-detail/'+proposal.id]"
+                                    routerLinkActive="router-link-active">{{ proposal.title }} </a>
+                                <button class="promotions__btn btn btn_border"
+                                    [routerLink]="['/proposal-detail/'+proposal.id]"
+                                    routerLinkActive="router-link-active"><svg class="icon icon-info-square ">
+                                        <use xlink:href="assets/img/sprite.svg#icon-info-square "></use>
+                                    </svg><span class="btn__text">Details</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="" [ngStyle]="{'display': result && result.length > 10 ? 'block': 'none'}">
+                    <div class="pagination-container w-100 mt-16">
+                        <jw-pagination [items]="result" (changePage)="onChangePage($event)"></jw-pagination>
+                    </div>
+                </div>
+                <div *ngIf="result && result.length == 0" class="text-center"> NO RECORD</div>
+            </div>
+            <div class="text-center" *ngIf="!result"><img src="assets/img/page-loader.gif" /></div>
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max = "4"></app-page-loader>
+    </div>
+    <app-new-proposal [category]="id" [balance]="balance" [fee]="transactionFee" (newEvent)="reloadData($event)">
+    </app-new-proposal>
+    <app-toast [message]="message"></app-toast>

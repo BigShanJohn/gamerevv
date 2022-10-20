@@ -1,0 +1,44 @@
+<div class="header header_border">
+
+    <a class="header__logo" href="/"><img src="assets/img/side-logo.png" alt="" /></a>
+    <div class="header__group">
+        <div class="header__item header__item_notifications">
+            <button id="not-btn" class="header__head " (click)="openNotification()">
+                <svg class="icon icon-notification">
+                    <use xlink:href="assets/img/sprite.svg#icon-notification"></use>
+                </svg>
+                <span class="notification-label notification-label-red" *ngIf="histories && histories.length > oldCount">{{ histories.length - oldCount}}</span>
+            </button>
+            <div class="header__body">
+                <div class="header__notifications">
+                    <div class="header__notification cursor_pointer" *ngFor="let history of histories | slice:0:5" routerLink="/wallet">
+                        <div class="header__icon"><img src="assets/img/paper.svg" alt="" /></div>
+                        <div class="header__details">
+                            <div class="header__info">{{ history.description }}</div>
+                            <div class="header__line">
+                                <div class="header__time">{{ formatDate(history.dateCreated) }} </div>
+                                <div class="header__status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <a class="header__user js-popup-open" href="#popup-profile">
+        <img *ngIf="user" [src]="getPhoto(user.photo)" alt=""  /></a>
+    <button class="header__toggle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M22 12H3" stroke="#11142d"></path>
+            <g stroke="#808191">
+                <path d="M22 4H13"></path>
+                <path opacity=".301" d="M22 20H13"></path>
+            </g>
+            <path d="M7 7l-5 5 5 5" stroke="#11142d"></path>
+        </svg></button>
+       
+</div>
+<app-profile-modal></app-profile-modal>

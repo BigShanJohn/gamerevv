@@ -1,0 +1,185 @@
+<div class="page full">
+    <app-sidebar page="home"></app-sidebar>
+    <div class="page__content">
+        <app-header></app-header>
+        <div class="page__row" [ngClass]="pageLoader && pageLoader >= 4 ? '': 'd-none'">
+            <div class="page__col">
+                <div class="slider slider_home">
+                    <div class="slider__container">
+                        <div class="slider__list js-slider owl-carousel">
+
+                            <div class="slider__item" *ngFor="let post of posts">
+                                <div class="slider__wrap">
+                                    <div class="slider__date">{{ post.date}} </div>
+                                    <div class="slider__title">{{ post.title }}</div>
+                                    <div class="slider__info">{{ post.description }}</div>
+                                    <a class="slider__btn btn btn_white" target="_blank" [href]="post.url">Find out
+                                        more</a>
+                                </div>
+                                <div class="slider__preview"><img [src]="getImageURL(post.image)" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widgets">
+
+                    <div class="widgets__list">
+                        <div class="widgets__item">
+                            <div class="widgets__head">
+                                <div class="widgets__company">
+                                    <div class="widgets__logo"><img src="assets/img/GAV.png" alt=""></div>
+                                    <div class="widgets__details">
+                                        <div class="widgets__category">Gamrevv Tokens</div>
+                                        <div class="widgets__info">GAV</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="widgets__body">
+                                <div class="widgets__line">
+                                    <div *ngIf="balance" class="widgets__price">{{ formatMoney(balance.GAV) }} GAV</div>
+                                    <div *ngIf="!balance" class="widgets__price"><img class="loader"
+                                            src="assets/img/loading.gif" /></div>
+
+                                </div>
+
+                            </div>
+                            <button class="widgets__btn btn btn_blue btn_wide js-popup-open" href="#popup-gam">Convert
+                                To GAM</button>
+                        </div>
+                        <div class="widgets__item">
+                            <div class="widgets__head">
+                                <div class="widgets__company">
+                                    <div class="widgets__logo"><img src="assets/img/GAM.png" alt=""></div>
+                                    <div class="widgets__details">
+                                        <div class="widgets__category"> Game Tokens</div>
+                                        <div class="widgets__info">GAM</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="widgets__body">
+                                <div class="widgets__line">
+                                    <div *ngIf="balance" class="widgets__price">{{ formatMoney(balance.GAM) }} GAM</div>
+                                    <div *ngIf="!balance" class="widgets__price"><img class="loader"
+                                            src="assets/img/loading.gif" /></div>
+
+                                </div>
+
+                            </div><button class="widgets__btn btn btn_blue btn_wide js-popup-open"
+                                href="#popup-gav">Convert To GAV </button>
+                        </div>
+                        <div class="widgets__item">
+                            <div class="widgets__head">
+                                <div class="widgets__company">
+                                    <div class="widgets__logo"><img src="assets/img/BNB.png" alt=""></div>
+                                    <div class="widgets__details">
+                                        <div class="widgets__category">BNB</div>
+                                        <div class="widgets__info">WBNB</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="widgets__body">
+                                <div class="widgets__line">
+                                    <div class="widgets__price" *ngIf="balance"> {{ formatMoney(balance.BNB) }} WBNB
+                                    </div>
+                                </div>
+
+                            </div><button class="widgets__btn btn btn_blue btn_wide" (click)="navigate('swap')">Swap to
+                                GAV</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="page__col">
+                <div class="card card_widget text-center"><button class="card__next"><svg
+                            class="icon icon-arrow-up-right">
+                            <use xlink:href="assets/img/sprite.svg#icon-arrow-up-right"></use>
+                        </svg></button>
+                    <img *ngIf="!balance" class="loader" src="assets/img/loading.gif" />
+
+                    <div class="card__chart card__chart_total-balance">
+                        <div id="chart-total-balance"></div>
+                    </div>
+                    <div class="card__inner" *ngIf="balance">
+                        <div class="card__title h6">Total Balance</div>
+                        <div class="card__price h6 color-green">{{ formatMoney(total) }} USDT</div>
+                        <button class="card__btn btn btn_blue" (click)="openWithdrawModal()">Withdraw GAV</button>
+                    </div>
+                    <a id="openWithdrawModal" class="js-popup-open" href="#popup-withdraw"></a>
+                    <a id="successModal" class="js-popup-open" href="#popup-success"></a>
+                </div>
+                <div class="card">
+                    <div class="card__head">
+                        <div class="card__title h6">Latest Activities</div>
+                        <div class="dropdown"><button class="dropdown__head"><svg class="icon icon-dots">
+                                    <use xlink:href="assets/img/sprite.svg#icon-dots"></use>
+                                </svg></button>
+
+                        </div>
+                    </div>
+                    <div class="card__list">
+                        <div *ngFor="let history of histories">
+                            <div class="card__item"
+                                *ngIf="!(history.value/1000000000000000000 == 2 && getSymbol(history.address) == 'GAV')">
+
+                                <div class="card__icon bg-green color-white" *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                    getSymbol(history.address)) == 'IN'">IN
+                                </div>
+
+                                <div class="card__icon bg-red color-white" *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                getSymbol(history.address)) == 'OUT'">
+                                    OUT</div>
+
+                                <div class="card__icon " *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                getSymbol(history.address)) == 'SWAP'">
+                                    <img src="assets/img/SWAP-icon.png" />
+                                </div>
+
+                                <div class="card__details cursor_pointer" (click)="loadHistory(history)">
+
+                                    <div class="card__line">
+
+                                        <div class="card__category">
+                                            {{ getNotificationTitle(history.from_address, history.to_address,
+                                            getSymbol(history.address)) }}
+                                        </div>
+
+                                        <div class="card__date">{{formatDate(history.block_timestamp)}}</div>
+                                    </div>
+                                    <div class="card__status color-green">Complete</div>
+                                    <div class="card__price">{{ formatMoney(history.value/1000000000000000000) }}
+                                        {{getSymbol(history.address) }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <a id="openHistoryModal" class="js-popup-open" href="#popup-history"
+                            data-effect="mfp-zoom-in"></a>
+                        <a class="card__view" routerLink="/wallet">
+                            <div class="card__arrow"><svg class="icon icon-arrow-right">
+                                    <use xlink:href="assets/img/sprite.svg#icon-arrow-right"></use>
+                                </svg></div>View all activity
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max = "4"></app-page-loader>
+    </div>
+
+
+
+    <app-actvity-modal [history]="history"></app-actvity-modal>
+    <app-withdraw-modal [fee]="transactionFee" [balance]="balance" (newEvent)="reloadData($event)"></app-withdraw-modal>
+    <app-covert-gam-modal [fee]="transactionFee" [balance]="balance" (newEvent)="reloadData($event)">
+    </app-covert-gam-modal>
+    <app-covert-gav-modal [fee]="transactionFee" [balance]="balance" (newEvent)="reloadData($event)">
+    </app-covert-gav-modal>
+    <app-success-modal [successMessage]="successMessage"></app-success-modal>

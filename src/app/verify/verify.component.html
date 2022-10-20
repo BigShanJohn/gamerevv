@@ -1,0 +1,21 @@
+<div class="login">
+    <div class="login__row">
+        <app-left class="dark-bg"></app-left>
+        <div class="login__col">
+            <form action="register" method="POST">
+                <a class="login__logo" href="index.html"><img src="assets/img/2-Secondary logo.svg" alt=""></a>
+                <div class="login__form">
+                    <div class="login__stage h4">Verify Your<br>Account</div>
+                    <p class="text-center">A verification code has been sent to your email</p>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Code</div>
+                        <div class="field__wrap otp-field">
+                            <otp [setting]="settings" (onValueChange)="onInputChange($event)"></otp>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <app-toast [message]="message"></app-toast>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="page full">
+  <app-sidebar page="games"></app-sidebar>
+  <div class="page__wrapper page__content">
+    <app-header></app-header>
+    <div class="main js-main" [ngClass]="pageLoader >= 1 ? '': 'd-none'">
+      <div class="main__container">
+        <div class="main__for js-slider js-main-for">
+          <div class="main__slide" *ngFor="let game of currentGames ">
+            <div class="main__item" [ngStyle]="{'background-image': 'url('+ getImageURL(game.backgroundImage)  +')'}">
+              <div class="main__details">
+                <div class="main__title h4 text-shadow">{{ game.title }}</div>
+                <div class="main__parameters">
+                  <div class="main__parameters">
+                    <div class="main__parameter">
+                      <div class="main__text">{{ game.tagline }}</div>
+                    </div>
+                    <div class="main__parameter">{{ game.languages }}</div>
+                  </div>
+
+                </div><button class="main__btn btn btn_purple" (click)="openVideo(game.video)">Watch</button>
+              </div>
+            </div>
+          </div>
+          <div class="main__slide" *ngFor="let game of currentGames ">
+            <div class="main__item" [ngStyle]="{'background-image': 'url('+ getImageURL(game.backgroundImage) +')'}">
+              <div class="main__details">
+                <div class="main__title h4 text-shadow">{{ game.title }}</div>
+                <div class="main__parameters">
+                  <div class="main__parameter">
+                    <div class="main__icon"><img class="main__pic" src="assets/img/league-of-legends.png" alt=""></div>
+                    <div class="main__text">{{ game.description }}</div>
+                  </div>
+
+                </div><button class="main__btn btn btn_purple" (click)="openVideo(game.video)">Watch</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="main__nav js-main-nav">
+          <div class="main__preview" *ngFor="let game of currentGames "
+            [ngStyle]="{'background-image': 'url('+ getImageURL(game.backgroundImage)  +')'}"></div>
+          <div class="main__preview" *ngFor="let game of currentGames "
+            [ngStyle]="{'background-image': 'url('+ getImageURL(game.backgroundImage)  +')'}"></div>
+        </div>
+        <div class="main__line">
+          <div class="main__progress js-main-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span
+              class="main__label js-slider-label sr-only"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="page__center" [ngClass]="pageLoader >= 1 ? '': 'd-none'">
+
+
+      <div class="categories">
+        <div class="categories__info h5">Live Games</div>
+        <div class="categories__list">
+          <div class="categories__item categories__item_big mobile-hide">
+            <div class="categories__slider js-slider-categories">
+              <div class="categories__slide" *ngFor="let game of currentGames | slice: 0: 1 ">
+                <div class="categories__box">
+                  <div class="categories__preview"
+                    [ngStyle]="{'background-image': 'url('+ getImageURL(game.thumbnail)  +')'}">
+                  </div>
+                  <div class="categories__details">
+
+                    <div class="categories__tags">
+                      <div class="categories__tag">{{game.tagline}}</div>
+                      <div class="categories__tag">{{game.languages}}</div>
+                    </div>
+                    <div class="categories__title h5" [routerLink]="['/game/'+game.id]">{{ game.title}}</div>
+
+                    <button class="categories__btn btn btn_purple" [routerLink]="['/game/'+game.id]">Play</button>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="categories__item categories__item_sm  desktop-hide tablet-hide"
+            *ngFor="let game of currentGames | slice: 0: 1 ">
+            <div class="categories__preview"
+              [ngStyle]="{'background-image': 'url('+ getImageURL(game.backgroundImage)  +')'}"></div>
+            <div class="categories__details">
+
+              <div class="categories__tags">
+                <div class="categories__tag">{{game.tagline}}</div>
+                <div class="categories__tag">{{game.languages}}</div>
+              </div>
+              <div class="categories__title h6">{{ game.title}}</div>
+
+              <button class="categories__btn btn btn_gray" [routerLink]="['/game/'+game.id]">Play</button>
+            </div>
+          </div>
+          <div class="categories__item categories__item_sm" *ngFor="let game of currentGames | slice: 1: 4 ">
+            <div class="categories__preview" [ngStyle]="{'background-image': 'url('+ getImageURL(game.thumbnail) +')'}">
+            </div>
+            <div class="categories__details">
+
+              <div class="categories__title h6" [routerLink]="['/game/'+game.id]">{{ game.title}}</div>
+              <button class="categories__btn btn btn_gray" [routerLink]="['/game/'+game.id]">Play</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="collection">
+        <div class="collection__head">
+          <div class="collection__title h5">Upcoming Games</div>
+
+        </div>
+        <div class="collection__list">
+          <a class="card" *ngFor="let game of upcomingGames ">
+            <div class="card__preview"><img class="card__pic" [src]="getImageURL(game.thumbnail) " /></div>
+            <div class="card__body">
+              <div class="card__title h6">{{ game.title}}</div>
+              <div class="main__parameters">
+                <div class="main__parameter">
+                  <div class="main__parameter">{{ game.tagline }}</div>
+                </div>
+                <div class="main__parameter">{{ game.languages }}</div>
+              </div>
+            </div>
+
+          </a>
+
+        </div>
+      </div>
+    </div>
+    <app-page-loader [pageLoader]="pageLoader" max="1"></app-page-loader>
+  </div>
+
+</div>
+<a id="openVideoModal" class="js-popup-open" href="#popup-video"></a>
+<app-video [video]="selectedVideo"></app-video>

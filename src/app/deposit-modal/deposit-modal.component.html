@@ -1,0 +1,42 @@
+<div class="popup popup_settings mfp-hide" id="popup-deposit">
+    <div *ngIf="!isConfirm">
+        <div class="popup__title h6" *ngIf="!processing">Add GAM to {{ title }} </div>
+        <div class="popup__title h6" *ngIf="processing">Processing your transaction...</div>
+        <div class="popup__tabs js-tabs">
+            <div class="operations" *ngIf="!processing">
+                <form class="operations__form d-block">
+                    <div *ngIf="message" class=" message-alert" [ngClass]="success? 'bg-green': 'bg-red'">
+                        {{ message }}
+                    </div>
+
+                    <div class="operations__balance" *ngIf="balance">
+                        <div class="operations__label">AVAILABLE BALANCE</div>
+                        <div class="operations__counter">{{formatMoney(balance.GAM)}} GAM</div>
+                    </div>
+                    <div class="operations__action">
+                        <div class="operations__field field js-field">
+                            <div class="field__label">AMOUNT TO ADD
+                            </div>
+                            <div class="field__wrap">
+                                <input class="field__input js-field-input" type="text" name="amount"
+                                    [(ngModel)]="amount" (keyup)="amountValidator()">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div *ngIf="amountError" class=" message-alert bg-red">
+                        {{ amountError }}
+                    </div>
+                    <button class="operations__btn btn btn_blue btn_wide mt-16" (click)="openConfirm()">Add Fund</button>
+                </form>
+
+            </div>
+            <div class="operations text-center" *ngIf="processing">
+                <img src="assets/img/After-Initiation-of-Transactions-image.png" />
+                <h4 class="processing__title">Hang in there as we perform our magic.</h4>
+            </div>
+        </div>
+    </div>
+    <app-toast [message]="message" [success]="success"></app-toast>
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm"></app-confirm-modal>
+</div>

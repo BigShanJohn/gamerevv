@@ -1,0 +1,88 @@
+<div class="page full">
+    <app-sidebar page="proposals"></app-sidebar>
+    <div class="page__content">
+        <app-header></app-header>
+        <div class="page__row" [ngClass]="pageLoader >= 1 ? '': 'd-none'">
+            <div class="page__col" *ngIf="proposal">
+
+                <a routerLink="/proposals" class="fa fa-long-arrow-left" style="font-size:15px"> All Proposals</a>
+                <div class="page__category h6">Proposal Title</div>
+                <div class="page__title h4">{{proposal.title}}</div>
+                <div class="promotion">
+                    <div class="promotion__preview"><img src="assets/img/placeholder.png"
+                            [src]="getImageURL(proposal.image)" alt=""></div>
+                    <div class="promotion__body">
+                        <div class="promotion__title">Proposal Overview </div>
+                        <div class="promotion__text">{{proposal.description}}</div>
+                        <div class="promotion__note">
+                            <div class="promotion__icon"><img src="assets/img/calendar.svg" alt=""></div>
+                            <div class="promotion__info">Campaign Period: {{ proposal.startDate }} to {{
+                                proposal.endDate }}</div>
+                        </div>
+                        <div class="promotion__category">Voting Options</div>
+                        <div class="promotion__list">
+                            <div class="promotion__line promotion__line_option cursor_pointer"
+                                *ngFor="let option of options"
+                                [ngClass]="selectedOption == option.id ? 'promotion__line_option_active' : ''"
+                                (click)="selectOption(option.id)">
+                                <div><svg class="icon icon-link">
+                                        <use xlink:href="assets/img/sprite.svg#icon-link"></use>
+                                    </svg>
+                                    {{ option.description }}
+                                    <svg class="icon icon-verify" *ngIf="selectedOption == option.id">
+                                        <use xlink:href="assets/img/sprite.svg#icon-verify"></use>
+                                    </svg>
+                                </div>
+                                <span style="float: right;">Votes: {{ getCount(option.id) }}</span>
+                            </div>
+
+                        </div>
+                        <div class="promotion__text" *ngIf="!hasVoted">*A fee of {{fee.general}} GAVs will be charged on
+                            this transaction
+                        </div>
+                        <div class="bg-success" *ngIf="isOkay"> Transaction successful </div>
+                        <div *ngIf="!hasVoted" class="mt-16">
+                            <button class="promotion__btn1 btn btn_blue" (click)="vote()" *ngIf="!processing"> Vote
+                                Now</button>
+                            <button class="promotion__btn btn btn_blue" *ngIf="processing"> Processing... </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page__col page__col_pt198" *ngIf="proposal">
+                <div class="promotions promotions_flex">
+                    <div class="promotions__transactions">
+
+
+                        <div class="promotions__category h6"></div>
+                        <div id="Wal_address" class="fas fa-user-alt"> Creator's Address: <a
+                                [href]="bscAddressLink(proposal.address)" target=_blank>{{truncate(proposal.address) }}
+                            </a>
+                        </div>
+                        <br>
+                        <div class="promotions__category fas fa-address-book" br> Addresses Voted</div>
+                        <div class="promotions__table">
+                            <div class="promotions__flex promotions__flex_head">
+                                <div class="promotions__cell">Rank</div>
+                                <div class="promotions__cell">Address</div>
+                                <div class="promotions__cell">Vote</div>
+                            </div>
+                            <div class="promotions__flex " *ngFor="let voter of voters;let x = index">
+                                <div class="promotions__cell">#{{x+1}}</div>
+                                <div class="promotions__cell"><a [href]="bscAddressLink(voter.address)"
+                                        target=_blank>{{truncate(voter.address)}}</a></div>
+                                <div class="promotions__cell">{{voter.weight}}</div>
+                            </div>
+                            <div class="promotions__category fas fa-cube"> Proposal Block: <a [href]="blockURL"
+                                    target=_blank>{{block}}</a> </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max="1"></app-page-loader>
+    </div>
+</div>
+<app-toast [message]="message"></app-toast>

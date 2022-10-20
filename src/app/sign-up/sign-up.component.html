@@ -1,0 +1,56 @@
+<div class="login">
+    <div class="login__row">
+        <app-left class="dark-bg"></app-left>
+        <div class="login__col">
+            <form action="register" method="POST">
+                <a class="login__logo" href="/"><img src="assets/img/2-Secondary logo.svg" alt=""></a>
+                <div class="login__form">
+                    <div class="login__stage h4">Sign Up</div>
+                    <div *ngIf="message"> {{ message }} </div>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Username</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="text" [(ngModel)]="username" name="username"></div>
+                    </div>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Email address</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="email" [(ngModel)]="email" name="email"></div>
+                    </div>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Password</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="password" [(ngModel)]="password" name="password"></div>
+                    </div>
+                    <div class="login__field field js-field">
+                        <div class="field__label">Confirm Password</div>
+                        <div class="field__wrap"><input class="field__input js-field-input" type="password" [(ngModel)]="cPassword" name="cPassword"></div>
+                    </div>
+                    <a class="login__verify" (click)="verify = true" [ngClass]="verify ? 'success' : ''">Click to verify 
+                        <svg class="icon icon-verify" *ngIf="verify">
+                        <use xlink:href="img/sprite.svg#icon-verify"></use>
+                        </svg>
+                        <div class="login__status"> </div>
+                    </a>
+                    <div class="login__note">By signing up I agree that I am 18 years of age or older, to the <a href="#">User Agreement</a>, <a href="#">Privacy Policy</a>, <a href="#">Cookie Policy</a>, and <a href="#">E-Sign Consent</a>.</div>
+                    <a (click)="submit()" class="login__btn btn btn_blue btn_wide btn-block" *ngIf="!isProcessing">Sign Up</a>
+                    <a class="login__btn btn btn_bue btn_wide btn-block" *ngIf="isProcessing" > Processing <img class="button-loader" src="assets/img/animation_500_kz2ksczx.gif"></a>
+                    <br/>OR
+                    <div class="social-buttons">
+                        <a  class="social-buttons__button social-button social-button--facebook" aria-label="Facebook" (click)="signInWithFB()">
+                            <i class="fa fa-facebook-f"></i>
+                        </a>
+                        <a  class="social-buttons__button social-button social-button--google" aria-label="Google" (click)="signInWithGoogle()">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="login__flex">
+                        <div class="login__text">Already a member?</div><a class="login__link" routerLink="/"><svg class="icon icon-link">
+                    <use xlink:href="assets/img/sprite.svg#icon-link"></use>
+                  </svg>Sign in now</a>
+                    </div>
+                </div>
+            </form>
+            <app-toast [message]="message"></app-toast>
+        </div>
+    </div>
+</div>

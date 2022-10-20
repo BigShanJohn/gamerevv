@@ -1,0 +1,14 @@
+<div class="popup popup_settings mfp-hide" id="popup-deposit">
+    <div class="popup__title h6">User Details</div>
+    <div class="popup__tabs js-tabs" *ngIf="user">
+        <h4> <a [href]="bscAddressLink(user.address)" target="_blank">
+                {{ user.address }}
+            </a>
+            <button class="pl-2" (cbOnSuccess)="isCopied = true" ngxClipboard [cbContent]="user.address">
+                <span class="copy" *ngIf="!isCopied">COPY</span>
+                <span class="copied" *ngIf="isCopied">COPIED</span>
+            </button>
+        </h4>
+        <qrcode [qrdata]="user.address" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+</div>

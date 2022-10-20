@@ -1,0 +1,21 @@
+<div class="popup popup_settings mfp-hide" id="popup-history">
+    <div class="popup__title h6">Transacton Details</div>
+    <div class="popup__tabs js-tabs" *ngIf="history">
+        <div class="activity__name" >
+            <h4>
+                {{ getNotificationTitle(history.from_address, history.to_address, getSymbol(history.address)) }}
+            </h4>
+        </div>
+        <div class="activity__name" *ngIf="history.from_address == history.to_address">
+            <h4>Transaction</h4>
+        </div>
+        <p><strong>Block: </strong>{{history.block_number}}</p>
+        <p><strong>From: </strong><a [href]="bscAddressLink(history.from_address)">{{history.from_address}}</a></p>
+        <p><strong>To: </strong><a [href]="bscAddressLink(history.to_address)">{{history.to_address}}</a></p>
+        <p><strong>Amount: </strong>{{ formatMoney(history.value/1000000000000000000) }} {{getSymbol(history.address) }}
+        </p>
+        <p><strong>Hash: </strong><a
+                [href]="bscTransactionLink(history.transaction_hash)">{{history.transaction_hash}}</a></p>
+        <p><strong>Time: </strong>{{history.block_timestamp}}</p>
+    </div>
+</div>

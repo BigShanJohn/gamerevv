@@ -1,0 +1,57 @@
+<div class="popup popup_settings mfp-hide" id="popup-gam">
+    <div *ngIf="!isConfirm">
+        <div class="popup__title h6" *ngIf="!processing">Convert GAV Tokens To GAM</div>
+        <div class="popup__title h6" *ngIf="processing">Processing your transaction...</div>
+
+        <div class="popup__tabs js-tabs">
+            <div class="operations" *ngIf="!processing">
+                <form class="operations__form d-block" *ngIf="!processing">
+                    <div *ngIf="message" class=" message-alert" [ngClass]="success? 'bg-green': 'bg-red'">
+                        {{ message }}
+                    </div>
+                    <div class="operations__balance" *ngIf="balance">
+                        <div class="operations__label">AVAILABLE BALANCE</div>
+                        <div class="operations__counter">{{formatMoney(balance.GAV)}}</div>
+                    </div>
+                    <div class="operations__action">
+                        <div class="operations__field field js-field">
+                            <div class="field__label">AMOUNT TO CONVERT (GAV)<span class="field__max"> Amount</span>
+                            </div>
+                            <div class="field__wrap"><input class="field__input js-field-input" type="text"
+                                    name="amount" [(ngModel)]="amount" (keyup)="amountValidator()"></div>
+                            <div class="operations__note">
+                                The ratio of GAV tokens to GAM is 1:1000
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div *ngIf="amountError" class=" message-alert bg-red">
+                        {{ amountError }}
+                    </div>
+                    <div class="operations__balance mb-0 rb-0" *ngIf="fee">
+                        <div class="operations__label">Transaction Fee</div>
+                        <div class="operations__counter">{{formatMoney(fee.general)}} GAV</div>
+                    </div>
+                    <div class="operations__note" *ngIf="fee">
+                        A fee of {{fee.general}} GAVs will be charged on this transaction
+                    </div>
+                    <div class="operations__balance mt-16" *ngIf="fee">
+                        <div class="operations__label">TOTAL RECEIVABLES</div>
+                        <div class="operations__counter" *ngIf="amount">{{ formatMoney(receivable) }} GAM </div>
+
+                    </div>
+
+                    <button class="operations__btn btn btn_blue btn_wide" (click)="openConfirm()">Convert</button>
+                </form>
+                <div *ngIf="processing" class="text-center"> <strong>Processing...</strong> </div>
+            </div>
+            <div class="operations text-center" *ngIf="processing">
+                <img src="assets/img/After-Initiation-of-Transactions-image.png" />
+                <h4 class="processing__title">Hang in there as we perform our magic.</h4>
+            </div>
+        </div>
+    </div>
+    <app-toast [message]="message" [success]="success"></app-toast>
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm"></app-confirm-modal>
+</div>

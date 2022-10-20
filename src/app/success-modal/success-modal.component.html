@@ -1,0 +1,8 @@
+<div class="popup popup_settings mfp-hide" id="popup-success">
+    <div class="popup__title h6">Transaction Successful</div>
+    <div class="popup__tabs js-tabs text-center" *ngIf="successMessage">
+        <p>{{successMessage}}</p>
+        <a class="login__btn btn btn_bue btn_wide btn-block mt-16" (click)="ok()"> Ok </a>
+    </div>
+
+</div>

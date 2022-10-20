@@ -1,0 +1,10 @@
+.page-loader{
+    min-height: 90vh;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.d-flex{
+    display: flex;
+}

@@ -1,0 +1,151 @@
+<div class="page full">
+    <app-sidebar page="wallet"></app-sidebar>
+    <div class="page__content">
+        <app-header></app-header>
+        <div class="wallets" [ngClass]="pageLoader >= 3 ? '': 'd-none'">
+            <div class="wallets__container" *ngIf="balance">
+                <div class="wallets__wrapper">
+                    <div class="wallets__row">
+                        <div class="wallets__total">
+                            <div class="wallets__Details h6 "> User Details</div>
+                            <p *ngIf="user" cl>Wallet Address: <a
+                                    [href]="bscAddressLink(user.address)">{{user.address}}</a>
+                                <button class="pl-2" (cbOnSuccess)="isCopied = true" ngxClipboard
+                                    [cbContent]="user.address">
+                                    <span class="copy" *ngIf="!isCopied">COPY</span>
+                                    <span class="copied" *ngIf="isCopied">COPIED</span>
+                                </button>
+                            </p>
+                            <p *ngIf="user">Email Address: {{user.email}}</p>
+                            <p *ngIf="user">Username : {{user.username}}</p><br>
+
+                            <div class="wallets__title h6">Total Balance</div>
+                            <div class="wallets__flex">
+                                <div class="wallets__number h3">{{formatMoney(total)}}</div>
+                                <div class="wallets__currency">USDT</div>
+                            </div>
+
+                        </div>
+                        <div class="wallets__group">
+                            <div class="wallets__box">
+                                <div class="wallets__info">GAM</div>
+                                <div class="wallets__progress bg-purple" [style.width]="GAMPercentage +'%'"></div>
+                            </div>
+                            <div class="wallets__box">
+                                <div class="wallets__info">GAV</div>
+                                <div class="wallets__progress bg-blue" [style.width]="GAVPercentage +'%'"></div>
+                            </div>
+                            <div class="wallets__box">
+                                <div class="wallets__info">BNB</div>
+                                <div class="wallets__progress bg-blue" [style.width]="BNBPercentage +'%'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wallets__inner">
+                        <div class="wallets__list">
+                            <div class="wallets__item">
+                                <div class="wallets__icon"><img src="assets/img/circle-purple.svg" alt=""></div>
+                                <div class="wallets__details">
+                                    <div class="wallets__info"> Game Tokens</div>
+                                    <div class="wallets__number h6" style="word-break: break-all;">
+                                        {{formatMoney(balance.GAM)}} GAM</div>
+                                    <div class="wallets__price">{{formatMoney(GAMValue)}} USDT</div>
+                                </div>
+                            </div>
+                            <div class="wallets__item">
+                                <div class="wallets__icon"><img src="assets/img/circle-blue.svg" alt=""></div>
+                                <div class="wallets__details">
+                                    <div class="wallets__info">Gamerevv Token</div>
+                                    <div class="wallets__number h6">{{formatMoney(balance.GAV)}} GAV</div>
+                                    <div class="wallets__price">{{formatMoney(GAVValue)}}USDT</div>
+                                </div>
+                            </div>
+                            <div class="wallets__item">
+                                <div class="wallets__icon"><img src="assets/img/circle-blue.svg" alt=""></div>
+                                <div class="wallets__details">
+                                    <div class="wallets__info">BNB Token</div>
+                                    <div class="wallets__number h6">{{formatMoney(balance.BNB)}} BNB</div>
+                                    <div class="wallets__price">{{formatMoney(BNBValue)}}USDT</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wallets__btns"><button class="wallets__btn btn btn_blue "
+                            (click)="openWithdrawModal()"><svg class="icon icon-withdraw">
+                                <use xlink:href="assets/img/sprite.svg#icon-withdraw"></use>
+                            </svg><span class="btn__text">Withdraw</span></button><button
+                            class="wallets__btn btn btn_border " (click)="openDepositModal()"><svg
+                                class="icon icon-deposit">
+                                <use xlink:href="assets/img/sprite.svg#icon-deposit"></use>
+                            </svg><span class="btn__text">Deposit</span></button></div>
+                </div>
+                <div class="balances">
+                    <div class="balances__title h6">Transaction History</div>
+
+                    <div class="activity__table">
+                        <div class="activity__row activity__row_head">
+                            <div class="activity__cell">TYPE</div>
+                            <div class="activity__cell">DATE</div>
+                            <div class="activity__cell">AMOUNT <span class="activity__hidden">/ DATE</span></div>
+                            <div class="activity__cell">TRANSACTION DETAILS</div>
+                        </div>
+                        <div class="activity__row" *ngFor="let history of pageOfItems" (click)="loadHistory(history)">
+
+                            <div class="activity__cell">
+                                <div class="activity__company">
+                                    <div class="activity__logo">
+                                        <div class="card__icon bg-green color-white" *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                    getSymbol(history.address)) == 'IN'">IN
+                                        </div>
+
+                                        <div class="card__icon bg-red color-white" *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                getSymbol(history.address)) == 'OUT'">
+                                            OUT</div>
+
+                                        <div class="card__icon " *ngIf="getNotificationIcon(history.from_address, history.to_address,
+                                getSymbol(history.address)) == 'SWAP'">
+                                            <img src="assets/img/SWAP-icon.png" />
+                                        </div>
+                                    </div>
+                                    <div class="activity__name"
+                                        *ngIf="!(history.value/1000000000000000000 == 2 && getSymbol(history.address) == 'GAV')">
+                                        {{ getNotificationTitle(history.from_address, history.to_address,
+                                        getSymbol(history.address)) }}
+                                    </div>
+                                    <div
+                                        *ngIf="(history.value/1000000000000000000 == 2 && getSymbol(history.address) == 'GAV')">
+                                        Transaction Charges</div>
+                                </div>
+                            </div>
+                            <div class="activity__cell">
+                                <div class="activity__date">{{formatDate(history.block_timestamp)}}</div>
+                            </div>
+                            <div class="activity__cell">
+                                <div class="activity__price">{{ formatMoney(history.value/1000000000000000000) }}
+                                    {{getSymbol(history.address) }}</div>
+                                <div class="activity__date activity__hidden">{{formatDate(history.block_timestamp)}}
+                                </div>
+                            </div>
+                            <div class="activity__cell"><button class="wallets__btn btn btn_blue"><a
+                                        style="color: white;" (click)="loadHistory(history)">Details</a></button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="pagination-container w-100 mt-16">
+                        <jw-pagination [items]="histories" (changePage)="onChangePage($event)"></jw-pagination>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <app-page-loader [pageLoader]="pageLoader" max="3"></app-page-loader>
+    </div>
+</div>
+<a id="openWithdrawModal" class="js-popup-open" href="#popup-withdraw"></a>
+<a id="openDepositModal" class="js-popup-open" href="#popup-deposit"></a>
+<a id="openHistoryModal" class="js-popup-open" href="#popup-history" data-effect="mfp-zoom-in"></a>
+<app-actvity-modal [history]="history"></app-actvity-modal>
+<app-withdraw-modal [fee]="transactionFee" [balance]="balance" (newEvent)="reloadData($event)"></app-withdraw-modal>
+<app-deposit [user]="user"></app-deposit>

@@ -1,0 +1,86 @@
+<div class="popup popup_settings mfp-hide" id="popup-proposal">
+    <div *ngIf="!isConfirm">
+        <div class="popup__title h6">Create Proposal</div>
+        <div class="popup__tabs js-tabs">
+            <div class="operations" *ngIf="!isLowFund">
+                <form class="operations__form d-block" *ngIf="!processing">
+                    <div class="operations__action">
+                        <div *ngIf="message" class=" message-alert bg-red">
+                            {{ message }}
+                        </div>
+                        <div class="bg-success" *ngIf="isOkay"> Transaction successful </div>
+                        <div class="operations__field field js-field mt-16">
+                            <div class="field__label">Proposal Title</div>
+                            <div class="field__wrap"><input class="field__input js-field-input" type="text" name="title"
+                                    [(ngModel)]="title"></div>
+                        </div>
+                        <div class="operations__field field js-field mt-16" *ngIf="!category">
+                            <div class="field__label">Proposal Category</div>
+                            <div class="field__wrap">
+                                <select class="field__input js-field-input" *ngIf="categories" type="text"
+                                    name="categoryId" [(ngModel)]="categoryId">
+                                    <option *ngFor="let cat of categories" [value]="cat.id" [innerHTML]="cat.name">
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="operations__field field js-field mt-16">
+                            <div class="field__label">Proposal Description</div>
+                            <div class="field__wrap"><textarea class="field__input js-field-input" type="text"
+                                    name="description" [(ngModel)]="description" rowspan="5"></textarea></div>
+                        </div>
+                        <div class="operations__field field js-field mt-16">
+                            <div class="field__label">Start Date</div>
+                            <div class="field__wrap"><input class="field__input js-field-input" type="date"
+                                    name="startDate" [(ngModel)]="startDate"></div>
+                        </div>
+                        <div class="operations__field field js-field mt-16">
+                            <div class="field__label">End Date</div>
+                            <div class="field__wrap"><input class="field__input js-field-input" type="date"
+                                    name="endDate" [(ngModel)]="endDate"></div>
+                        </div>
+                        <div class="operations__field field js-field mt-16">
+                            {{imageError}}
+                            <div class="custom-file fileInputProfileWrap">
+                                <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+                                <div class="img-space">
+
+                                    <ng-container *ngIf="isImageSaved; else elseTemplate">
+                                        <img [src]="cardImageBase64" />
+                                    </ng-container>
+                                    <ng-template #elseTemplate>
+
+                                        <img src="https://gateway.pinata.cloud/ipfs/QmTtLz1suL83Ch6Gx6VZ5wtM1rKbBkMQR2F4Aw32CQV61Q?preview=1"
+                                            class="img-responsive" style="display: none;">
+                                    </ng-template>
+
+                                </div>
+                                <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-16">Voting Options
+                        </h4>
+                        <div *ngFor="let value of values; let i = index">
+                            <input class="field__input_sm " type="text" [(ngModel)]="value.value" #name="ngModel"
+                                name="value{{i}}">
+                            <button class="operations__btn btn btn_gray btn_sm btn_custom"
+                                (click)="removevalue(i)">-</button>
+                        </div>
+                        <button class="operations__btn btn btn_blue btn_sm btn_custom" (click)="addvalue()">+</button>
+                    </div>
+                    <p *ngIf="fee">Creating a proposal will cost a transaction fee of {{fee.proposal}} GAV</p>
+
+                    <button class="operations__btn btn btn_blue btn_wide" (click)="openConfirm()">Create</button>
+                </form>
+                <div *ngIf="processing" class="text-center"> <strong>Processing...</strong> </div>
+            </div>
+            <div *ngIf="isLowFund text-center">You must have at least {{ minimumAmount() }} GAV before you can create a
+                proposal</div>
+        </div>
+    </div>
+    <app-toast [message]="message" [success]="success"></app-toast>
+    <app-confirm-modal (confirm)="onConfirm($event)" *ngIf="isConfirm"></app-confirm-modal>
+</div>
